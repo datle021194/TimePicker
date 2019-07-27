@@ -24,7 +24,21 @@ timePickerVC.setTimePickerToDate(myDate)
 ```
 
 # Get timepicker value
+
+TimePicker return a UTC Date, if the time in picker is equal or smaller than current time then the return value will return the time of next date:
 ```swift
-timePickerVC.timePickerValue() // return Date
+timePickerVC.timePickerValue() // return UTC Date
 ```
-TimePicker return a Date, if the time in picker is equal or smaller than current time then the return value will return the time of next date
+
+Get time picker value when it's value changed:
+
+```swift
+let timePickerVC = DLTimePickerVC()
+timePickerVC.delegate = self
+...
+
+
+func timePickerDidChangeValue(_ value: Date?) {
+
+}
+```

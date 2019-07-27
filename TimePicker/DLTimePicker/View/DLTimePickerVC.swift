@@ -35,7 +35,26 @@ class DLTimePickerVC: UIViewController {
     
     // MARK: - Public
     
-    func setTimePickerToDate(_ date: Date, timeFormatType: TimePickerFormatType) {
+    func setTimePickerToDate(_ date: Date) {
+        let timeFormatType: TimePickerFormatType = timePickerHelper.is24HourFormat() ? .twentyFourHour : .twelveHour
+        setTimePickerToDate(date, timeFormatType: timeFormatType)
+    }
+    
+    func timePickerValue() -> Date? {
+        let hourComponent = 0
+        let minuteComponent = 1
+        let hourRow = pickerView.selectedRow(inComponent: hourComponent)
+        let minuteRow = pickerView.selectedRow(inComponent: minuteComponent)
+        
+        let hour = timeDataSource.title(forRow: hourRow, component: hourComponent)
+        let minute = timeDataSource.title(forRow: minuteRow, component: minuteComponent)
+        
+        return timeDataSource.date(forHour: hour, minute: minute)
+    }
+    
+    // MARK: - Private
+    
+    private func setTimePickerToDate(_ date: Date, timeFormatType: TimePickerFormatType) {
         let calendar = timePickerHelper.calendar()
         
         // get hour and minute from date parameter
@@ -55,20 +74,6 @@ class DLTimePickerVC: UIViewController {
             select12hClockUnit(withHour: hour!)
         }
     }
-    
-    func timePickerValue() -> Date? {
-        let hourComponent = 0
-        let minuteComponent = 1
-        let hourRow = pickerView.selectedRow(inComponent: hourComponent)
-        let minuteRow = pickerView.selectedRow(inComponent: minuteComponent)
-        
-        let hour = timeDataSource.title(forRow: hourRow, component: hourComponent)
-        let minute = timeDataSource.title(forRow: minuteRow, component: minuteComponent)
-        
-        return timeDataSource.date(forHour: hour, minute: minute)
-    }
-    
-    // MARK: - Private
     
     private func jumpTimePicker(toHourRow hourRow: Int, minuteRow: Int) {
         let hourComponent = 0

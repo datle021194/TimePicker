@@ -59,9 +59,9 @@ struct DLTwelveTimeFormat: DLTimeDataSource {
         return numberOfRowsInComponent(minuteComponent) / 2
     }
     
-    func date(forHour hour: String, minute: String) -> Date? {
+    func time(from timeObject: DLTime) -> Date? {
         guard let helper = timePickerHelper else { return nil }
-        return helper.date(forHour: hour, minute: minute)
+        return helper.time(from: timeObject)
     }
     
     // MARK: - Private

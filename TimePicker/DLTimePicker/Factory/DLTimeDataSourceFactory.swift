@@ -10,7 +10,7 @@ import Foundation
 
 struct DLTimeDataSourceFactory {
     
-    func timeDataSource(forType type: TimePickerFormatType) -> DLTimeDataSource {
+    func timeDataSource(forType type: DLTimeFormatType) -> DLTimeDataSource {
         switch type {
         case .twelveHour:
             return DLTwelveTimeFormat()

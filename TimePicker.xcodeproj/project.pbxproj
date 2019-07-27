@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8AE3F20322EC4467008919F0 /* DLTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE3F20222EC4467008919F0 /* DLTime.swift */; };
 		8AFA3B2A22EC028E00B0573F /* DLTwelveTimeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA3B2022EC028E00B0573F /* DLTwelveTimeFormat.swift */; };
 		8AFA3B2B22EC028E00B0573F /* DLTwentyFourTimeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA3B2122EC028E00B0573F /* DLTwentyFourTimeFormat.swift */; };
 		8AFA3B2C22EC028E00B0573F /* DLTimeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA3B2222EC028E00B0573F /* DLTimeDataSource.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8AE3F20222EC4467008919F0 /* DLTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLTime.swift; sourceTree = "<group>"; };
 		8AFA3B2022EC028E00B0573F /* DLTwelveTimeFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLTwelveTimeFormat.swift; sourceTree = "<group>"; };
 		8AFA3B2122EC028E00B0573F /* DLTwentyFourTimeFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLTwentyFourTimeFormat.swift; sourceTree = "<group>"; };
 		8AFA3B2222EC028E00B0573F /* DLTimeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLTimeDataSource.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				8AFA3B2222EC028E00B0573F /* DLTimeDataSource.swift */,
 				8AFA3B2022EC028E00B0573F /* DLTwelveTimeFormat.swift */,
 				8AFA3B2122EC028E00B0573F /* DLTwentyFourTimeFormat.swift */,
+				8AE3F20222EC4467008919F0 /* DLTime.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AFA3B2B22EC028E00B0573F /* DLTwentyFourTimeFormat.swift in Sources */,
+				8AE3F20322EC4467008919F0 /* DLTime.swift in Sources */,
 				8AFA3B3022EC028E00B0573F /* DLTimeDataSourceFactory.swift in Sources */,
 				8AFA3B2D22EC028E00B0573F /* DLTimePickerVC.swift in Sources */,
 				8AFA3B2C22EC028E00B0573F /* DLTimeDataSource.swift in Sources */,

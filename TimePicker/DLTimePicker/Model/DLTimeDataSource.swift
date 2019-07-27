@@ -15,5 +15,5 @@ protocol DLTimeDataSource {
     func title(forRow: Int, component: Int) -> String
     func centerHourRow() -> Int
     func centerMinuteRow() -> Int
-    func date(forHour: String, minute: String) -> Date?
+    func time(from timeObject: DLTime) -> Date?
 }

@@ -26,30 +26,34 @@ struct DLTimePickerHelper {
         return currentCalendar
     }
     
-    func date(forHour hour: String, minute: String) -> Date? {
-        guard let myHour = Int(hour), let myMinute = Int(minute) else { return nil }
+    func time(from timeObject: DLTime) -> Date? {
+        var myTimeObject = timeObject
         
-        let calendar = self.calendar()
-        
-        // get current date
-        let currentDate = Date()
-        let calendarComponents: Set<Calendar.Component> = [.day, .month, .year, .hour, .minute, .second]
-        let currentDateComponent = calendar.dateComponents(calendarComponents, from: currentDate)
-        
-        // get date from time picker
-        var myDateComponent = currentDateComponent
-        myDateComponent.hour = Int(myHour)
-        myDateComponent.minute = Int(myMinute)
-        myDateComponent.calendar = calendar
-        
-        guard var myDate = myDateComponent.date else { return nil}
-        
-        // return the next date if time in picker equal/smaller than current time
-        if Int(myDate.timeIntervalSinceNow) <= Int(currentDate.timeIntervalSinceNow) {
-            let oneDayInSecond: Double = 60*60*24
-            myDate = myDate.addingTimeInterval(oneDayInSecond)
+        // convert 12h clock to 24h clock
+        if myTimeObject.format == .twelveHour && myTimeObject.timeSymbol! == .pm {
+            myTimeObject.hour += 12
         }
         
-        return myDate
+        let calendar = self.calendar()
+        let calendarComponents: Set<Calendar.Component> = [.day, .month, .year, .hour, .minute]
+        
+        // get current utc time
+        var currentDateComponent = calendar.dateComponents(calendarComponents, from: Date())
+        currentDateComponent.calendar = calendar
+        let currentUTCTime = currentDateComponent.date!
+        
+        // get utc time from time picker
+        var myDateComponent = currentDateComponent
+        myDateComponent.hour = myTimeObject.hour
+        myDateComponent.minute = myTimeObject.minute
+        guard var myUTCTime = myDateComponent.date else { return nil }
+        
+        // return the next date time if the time in picker equal/smaller than the current time
+        if Int(myUTCTime.timeIntervalSinceNow) <= Int(currentUTCTime.timeIntervalSinceNow) {
+            let oneDayInSecond: Double = 60*60*24
+            myUTCTime = myUTCTime.addingTimeInterval(oneDayInSecond)
+        }
+        
+        return myUTCTime
     }
 }

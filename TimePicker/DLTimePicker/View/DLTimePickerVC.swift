@@ -8,7 +8,11 @@
 
 import UIKit
 
-enum TimePickerFormatType {
+@objc protocol DLTimePickerDelegate: NSObjectProtocol {
+    @objc optional func timePickerDidChangeValue(_ value: Date?)
+}
+
+enum DLTimeFormatType {
     case twelveHour
     case twentyFourHour
 }
@@ -17,44 +21,62 @@ class DLTimePickerVC: UIViewController {
     
     @IBOutlet weak var pickerView: UIPickerView!
     
+    weak var delegate: DLTimePickerDelegate?
+    
     private var timeDataSource: DLTimeDataSource!
-    private lazy var timePickerHelper = DLTimePickerHelper()
+    private let timePickerHelper = DLTimePickerHelper()
+    private var timeFormat: DLTimeFormatType {
+        return timePickerHelper.is24HourFormat() ? .twentyFourHour : .twelveHour
+    }
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let timeFormatType: TimePickerFormatType = timePickerHelper.is24HourFormat() ? .twentyFourHour : .twelveHour
-        
-        timeDataSource = DLTimeDataSourceFactory().timeDataSource(forType: timeFormatType)
+        timeDataSource = DLTimeDataSourceFactory().timeDataSource(forType: timeFormat)
         timeDataSource.setHeler(timePickerHelper)
         
-        setTimePickerToDate(Date(), timeFormatType: timeFormatType)
+        setTimePickerToDate(Date(), timeFormatType: timeFormat)
     }
     
     // MARK: - Public
     
     func setTimePickerToDate(_ date: Date) {
-        let timeFormatType: TimePickerFormatType = timePickerHelper.is24HourFormat() ? .twentyFourHour : .twelveHour
-        setTimePickerToDate(date, timeFormatType: timeFormatType)
+        setTimePickerToDate(date, timeFormatType: timeFormat)
     }
     
     func timePickerValue() -> Date? {
+        // get hour and minute in time picker
         let hourComponent = 0
         let minuteComponent = 1
         let hourRow = pickerView.selectedRow(inComponent: hourComponent)
         let minuteRow = pickerView.selectedRow(inComponent: minuteComponent)
-        
         let hour = timeDataSource.title(forRow: hourRow, component: hourComponent)
         let minute = timeDataSource.title(forRow: minuteRow, component: minuteComponent)
+        guard let myHour = Int(hour), let myMinute = Int(minute) else { return nil }
         
-        return timeDataSource.date(forHour: hour, minute: minute)
+        // get time symbol in time picker
+        // 0: am - 1: pm
+        var timeSymbol: DLTimeSymbol?
+        if timeFormat == .twelveHour {
+            let symbolComponent = 2
+            let selectedSymbol = pickerView.selectedRow(inComponent: symbolComponent)
+            timeSymbol = selectedSymbol == 0 ? .am : .pm
+        }
+        
+        var timeObject = DLTime()
+        timeObject.hour = Int(myHour)
+        timeObject.minute = Int(myMinute)
+        timeObject.format = timeFormat
+        timeObject.timeSymbol = timeSymbol
+        
+        return timeDataSource.time(from: timeObject)
     }
     
     // MARK: - Private
     
-    private func setTimePickerToDate(_ date: Date, timeFormatType: TimePickerFormatType) {
+    private func setTimePickerToDate(_ date: Date, timeFormatType: DLTimeFormatType) {
         let calendar = timePickerHelper.calendar()
         
         // get hour and minute from date parameter
@@ -112,5 +134,9 @@ extension DLTimePickerVC: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        delegate?.timePickerDidChangeValue?(timePickerValue())
     }
 }
